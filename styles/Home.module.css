@@ -2,6 +2,8 @@
   margin: 0;
 }
 
+
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -38,6 +40,10 @@
   width: 20%;
   height: 100%;
   background-color: #1f1e1edb;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: left;
 }
 
 .explorer .h3 {
@@ -48,13 +54,46 @@
   cursor: pointer;
 }
 
+.explorer .file span {
+  border: 0.5px solid #fff;
+  padding: auto;
+  border-radius: 10px;
+}
+
 .explorer button {
   cursor: pointer;
   background: transparent;
-  border: none;
+  /* border: none; */
   border-radius: 10px;
   margin: 0 0 .5rem 0;
 }
+
+.controllers {
+  display: flex;
+  justify-content: start;
+  width: 10%;
+}
+
+.controllers img {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin: 0 0 0 0.5rem;
+}
+
+.controllers img:hover {
+  cursor: pointer;
+  border-collapse: separate;
+  border-spacing: 3rem 0;
+  background: transparent;
+  border: 1px solid #fff;
+  border-radius: 10px;
+}
+
+.controllers img:active {
+  padding: 5px;
+}
+
+
 
 .main {
   min-height: 100vh;
@@ -156,6 +195,37 @@
   height: 1em;
   margin-left: 0.5rem;
 }
+
+.show {
+  /* border: 1px #eaeaea solid; */
+  display: flex;
+  flex-direction: column;
+  margin: .5rem 0 0 .2rem;
+}
+
+.show span {
+  margin: 0 0 0 .5rem;
+  padding: auto 0 auto 0;
+}
+
+.show span:hover {
+  color: #0070f3;
+}
+
+.hide {
+  display: none;
+}
+
+.newFile {
+  text-align: center;
+  cursor: pointer;
+}
+
+.newFile:hover {
+  color: #0070f3;
+}
+
+
 
 @media (max-width: 600px) {
   .grid {

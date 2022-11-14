@@ -3,12 +3,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Editor, { Monaco } from "@monaco-editor/react";
 
+import styles from '../styles/Home.module.css'
+
 
 
 export const TextEditor = (props: any, monaco: Monaco) => {
     const editorRef = useRef(null);
 
-    const { editor, saveFiles, setSaveFiles, files, index } = props;
+    const { editor, saveFiles, setSaveFiles, files, index, display } = props;
     const [code, setCode] = useState("// some comment");
 
 
@@ -32,8 +34,9 @@ export const TextEditor = (props: any, monaco: Monaco) => {
         }
     }, [files, index]);
 
-    return (
-        <Editor
+
+    {
+        if (display) return <Editor
             width={"100%"}
             height={"100%"}
             theme="vs-dark"
@@ -41,6 +44,7 @@ export const TextEditor = (props: any, monaco: Monaco) => {
             defaultValue="// some comment"
             value={code}
             onMount={handleEditorDidMount} />
+        else return <div className={styles.hide}></div>
+    }
 
-    )
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import fs from 'fs';
 import Head from 'next/head'
 import Image from 'next/image'
@@ -6,6 +7,13 @@ import { TextEditor } from '../components/TextEditor'
 import styles from '../styles/Home.module.css'
 import { FileUploaded } from '../components/FileUploaded';
 import Editor, { Monaco } from "@monaco-editor/react";
+
+import play from '../public/svgs/play.svg'
+import stop from '../public/svgs/stop.svg'
+import terminal from '../public/svgs/terminal.svg'
+
+
+
 
 interface IFile {
   name: string;
@@ -26,8 +34,8 @@ export default function Home() {
   const [saveFiles, setSaveFiles] = useState<any>([])
 
   const [files, setFiles] = useState<IFile[]>([]);
-  const handleColapseOpens = () => {
-    if (colapseOpens == '>') {
+  const handleColapseList = (check: any) => {
+    if (check == '>') {
       setColapseOpens('v');
     } else {
       setColapseOpens('>');
@@ -51,9 +59,14 @@ export default function Home() {
   };
 
   const changeCode = (index: number) => {
-    console.log(files[index].name);
     setSelectedFile(index);
   };
+
+  const newFile = () => {
+    setFiles([...files, { name: "newFile", text: "" }]);
+    setSelectedFile(files.length);
+  }
+
 
   useEffect(() => {
     (async () => {
@@ -63,9 +76,9 @@ export default function Home() {
           check.add(file.name);
         });
         if (check.has(saveFiles[0].name)) {
-          alert("Ya existe un archivo con este nombre");
         } else {
           const text = await saveFiles[0].text();
+          setSelectedFile(files.length);
           setFiles([...files, { name: saveFiles[0].name, text: text }]);
 
         }
@@ -87,7 +100,11 @@ export default function Home() {
           <span>Guz code.</span>
         </div>
         <div><button>Buscar Archivo</button></div>
-        <div></div>
+        <div className={styles.controllers}>
+          <Image src={play} alt="" />
+          <Image src={stop} alt="" />
+          <Image src={terminal} alt="" />
+        </div>
       </header>
 
       <main >
@@ -95,26 +112,27 @@ export default function Home() {
           <div className={styles.explorer}>
 
             <input type="file" onChange={handleFileInput} />
+            <span onClick={e => newFile()} className={styles.newFile}>Crear nuevo Archivo</span>
             <h3 className={styles.h3}>Explorer</h3>
             <button
-              onClick={e => handleColapseOpens()}
+              onClick={e => handleColapseList(colapseOpens)}
             >{colapseOpens}     EDITORES ABIERTOS
             </button>
-            <div>
+            <div className={colapseOpens === '>' ? styles.hide : styles.show}>
               {files?.map((file: any, index: number) => {
-                return (<div key={index} className={styles.file} onClick={e => changeCode(index)}><span>{file.name}</span></div>)
+                return (<div key={index} className={styles.file} onClick={e => changeCode(index)}><input type={'button'} value={file.name} /></div>)
               })}
             </div>
             <button
-              onClick={e => handleColapseFolders()}>{`${colapseFolders}     ${folder}`}</button>
+              onClick={e => handleColapseList(colapseFolders)}>{`${colapseFolders}     ${folder}`}</button>
             <div></div>
           </div>
-          <TextEditor
-            index={selectedFile}
-            files={files}
-            editor={Editor}
-            saveFiles={saveFiles}
-            setSaveFiles={setSaveFiles} />
+          {files.map((file: any, index: number) => {
+
+            return (
+              <TextEditor key={index} display={(selectedFile !== index) ? false : true} editor={file} saveFiles={saveFiles} setSaveFiles={setSaveFiles} files={files} index={index} />
+            )
+          })}
         </div>
       </main >
 
