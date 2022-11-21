@@ -54,18 +54,32 @@
   cursor: pointer;
 }
 
-.explorer .file span {
+.explorer .file input[type="file"] {
   border: 0.5px solid #fff;
   padding: auto;
   border-radius: 10px;
 }
 
-.explorer button {
+.explorer input[type="button"] {
   cursor: pointer;
   background: transparent;
   /* border: none; */
   border-radius: 10px;
   margin: 0 0 .5rem 0;
+  width: 100%;
+}
+
+.explorer input[type="text"] {
+  border: 0.5px solid #fff;
+  padding: auto;
+  border-radius: 2px;
+  margin: 0 0 .5rem 0;
+  width: 100%;
+}
+
+.explorer input[type="button"]:hover {
+  background: rgb(18, 18, 18);
+  color: #0070f3;
 }
 
 .controllers {
@@ -93,8 +107,6 @@
   padding: 5px;
 }
 
-
-
 .main {
   min-height: 100vh;
   padding: 0 0;
@@ -112,7 +124,7 @@
 }
 
 .footer span {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
@@ -142,6 +154,49 @@
   margin: 4rem 0;
   line-height: 1.5;
   font-size: 1.5rem;
+}
+
+.terminal {
+  position: absolute;
+  bottom: 2rem;
+  right: 0;
+  width: 83.3%;
+  height: 30%;
+  z-index: 99999;
+  display: flex;
+  overflow: auto;
+  white-space: nowrap;
+  background-color: #343333db;
+}
+
+
+.show {
+  /* border: 1px #eaeaea solid; */
+  display: flex;
+  flex-direction: column;
+  margin: .5rem 0 0 .2rem;
+}
+
+.show span {
+  margin: 0 0 0 .5rem;
+  padding: auto 0 auto 0;
+}
+
+.show span:hover {
+  color: #0070f3;
+}
+
+.hide {
+  display: none;
+}
+
+.newFile {
+  text-align: center;
+  cursor: pointer;
+}
+
+.newFile:hover {
+  color: #0070f3;
 }
 
 .code {
@@ -195,37 +250,6 @@
   height: 1em;
   margin-left: 0.5rem;
 }
-
-.show {
-  /* border: 1px #eaeaea solid; */
-  display: flex;
-  flex-direction: column;
-  margin: .5rem 0 0 .2rem;
-}
-
-.show span {
-  margin: 0 0 0 .5rem;
-  padding: auto 0 auto 0;
-}
-
-.show span:hover {
-  color: #0070f3;
-}
-
-.hide {
-  display: none;
-}
-
-.newFile {
-  text-align: center;
-  cursor: pointer;
-}
-
-.newFile:hover {
-  color: #0070f3;
-}
-
-
 
 @media (max-width: 600px) {
   .grid {

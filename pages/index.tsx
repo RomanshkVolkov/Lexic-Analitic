@@ -30,25 +30,26 @@ export default function Home() {
   const [colapseFolders, setColapseFolders] = useState('>');
 
   const [selectedFile, setSelectedFile] = useState<any | null>(0);
+  const [showTerminal, setShowTerminal] = useState(false);
 
   const [saveFiles, setSaveFiles] = useState<any>([])
 
   const [files, setFiles] = useState<IFile[]>([]);
-  const handleColapseList = (check: any) => {
+
+  const [inputChangeName, setInputChangeName] = useState<boolean[]>();
+
+
+  const handleColapseList = (check: any, set: any) => {
     if (check == '>') {
-      setColapseOpens('v');
+      set('v');
     } else {
-      setColapseOpens('>');
+      set('>');
     }
   };
 
-  const handleColapseFolders = () => {
-    if (colapseFolders == '>') {
-      setColapseFolders('v');
-    } else {
-      setColapseFolders('>');
-    }
-  };
+  const handleShowTerminal = () => {
+    (showTerminal) ? setShowTerminal(false) : setShowTerminal(true);
+  }
 
   const handleFileInput = (e: any) => {
     var files = e.target.files;
@@ -59,12 +60,29 @@ export default function Home() {
   };
 
   const changeCode = (index: number) => {
-    setSelectedFile(index);
+    if (index == selectedFile) setInputChangeName(inputChangeName?.map((item, i) => {
+      if (i == index) return true;
+      else return false;
+    }));
+    else setSelectedFile(index);
   };
 
   const newFile = () => {
     setFiles([...files, { name: "newFile", text: "" }]);
     setSelectedFile(files.length);
+  }
+
+  const handleChangeName = async (e: any, index: number) => {
+    console.log(e.target.value);
+    if (e.key === 'ENTER') {
+      console.log('Si entra')
+      setFiles(await files.map((file: any, i: number) => {
+        if (i === index) {
+          file.name = e.target.value;
+        }
+        return file;
+      }))
+    }
   }
 
 
@@ -86,6 +104,12 @@ export default function Home() {
     })();
   }, [saveFiles]);
 
+  useEffect(() => {
+    const status: boolean[] = [];
+    files.forEach((file) => status.push(false));
+    setInputChangeName(status);
+  }, [files]);
+
 
   return (
     <div className={styles.container}>
@@ -103,7 +127,7 @@ export default function Home() {
         <div className={styles.controllers}>
           <Image src={play} alt="" />
           <Image src={stop} alt="" />
-          <Image src={terminal} alt="" />
+          <Image src={terminal} alt="" onClick={e => handleShowTerminal()} />
         </div>
       </header>
 
@@ -112,30 +136,38 @@ export default function Home() {
           <div className={styles.explorer}>
 
             <input type="file" onChange={handleFileInput} />
+            <input type="text" onChange={(e) => handleChangeName} />
             <span onClick={e => newFile()} className={styles.newFile}>Crear nuevo Archivo</span>
             <h3 className={styles.h3}>Explorer</h3>
             <button
-              onClick={e => handleColapseList(colapseOpens)}
+              onClick={e => handleColapseList(colapseOpens, setColapseOpens)}
             >{colapseOpens}     EDITORES ABIERTOS
             </button>
             <div className={colapseOpens === '>' ? styles.hide : styles.show}>
               {files?.map((file: any, index: number) => {
-                return (<div key={index} className={styles.file} onClick={e => changeCode(index)}><input type={'button'} value={file.name} /></div>)
+                return (<div key={index} className={styles.file} onClick={e => changeCode(index)}>
+                  {(inputChangeName[index]) ? (<input type='text' defaultValue={file.name} onChange={(e) => handleChangeName(e, index)} />)
+                    :
+                    <input type={'button'} value={file.name} />
+                  }
+                </div>
+                )
               })}
             </div>
             <button
-              onClick={e => handleColapseList(colapseFolders)}>{`${colapseFolders}     ${folder}`}</button>
+              onClick={e => handleColapseList(colapseFolders, setColapseFolders)}>{`${colapseFolders}     ${folder}`}</button>
             <div></div>
           </div>
           {files.map((file: any, index: number) => {
 
             return (
-              <TextEditor key={index} display={(selectedFile !== index) ? false : true} editor={file} saveFiles={saveFiles} setSaveFiles={setSaveFiles} files={files} index={index} />
+              <TextEditor key={index} display={(selectedFile !== index) ? false : true} editor={file} saveFiles={saveFiles} setSaveFiles={setSaveFiles} files={files} index={index} onChange={setFiles} />
             )
           })}
         </div>
       </main >
 
+      {(showTerminal === true) && <div className={styles.terminal}></div>}
       <footer className={styles.footer}>
         <span>{`Lín. ${linea}, col. ${columna}`}</span>
       </footer>
