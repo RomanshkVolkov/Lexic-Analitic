@@ -182,7 +182,7 @@
   height: 30%;
   z-index: 99999;
   display: flex;
-  overflow: auto;
+  overflow: scroll;
   white-space: nowrap;
   background-color: #343333db;
 }

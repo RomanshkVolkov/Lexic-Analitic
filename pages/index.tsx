@@ -90,7 +90,6 @@ export default function Home() {
             setShowTerminal(true);
             setCode("Analizando...");
             const results = analize(files[selectedFile].text);
-            console.log(results);
             setCode("Código procesado:  " + results.textProcessed);
         }
     };
