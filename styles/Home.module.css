@@ -8,7 +8,7 @@
   display: flex;
   justify-content: space-between;
   background: #272727c7;
-  padding: .2rem;
+  padding: .3rem;
   text-align: center;
   font-size: .8rem;
   font-weight: 600;
@@ -19,12 +19,16 @@
   background: transparent;
   border: 1px solid #fff;
   border-radius: 10px;
-  padding: 0 10rem;
+  padding: .4rem 10rem;
 }
 
 .header .titleheader {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   text-align: center;
-  padding: 0 5rem;
+  font-size: 1.5rem;
+  margin-left: 6rem;
 }
 
 
@@ -33,7 +37,7 @@
   margin: 0 0 0 0;
   display: flex;
   justify-content: space-between;
-  height: 45rem;
+  height: 42.8rem;
 }
 
 .explorer {
@@ -42,7 +46,6 @@
   background-color: #1f1e1edb;
   display: flex;
   flex-direction: column;
-  justify-content: start;
   align-items: left;
 }
 
@@ -82,15 +85,42 @@
   color: #0070f3;
 }
 
+
+.inputfile {
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.fileDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+  font-size: 1.25em;
+  font-weight: 700;
+  color: white;
+  display: inline-block;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+  color: #0070f3;
+}
+
+
 .controllers {
   display: flex;
-  justify-content: start;
   width: 10%;
 }
 
 .controllers img {
-  width: 1.3rem;
-  height: 1.3rem;
   margin: 0 0 0 0.5rem;
 }
 
@@ -114,18 +144,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.footer {
-  height: 7%;
-  border-top: 2px solid #eaeaea;
-  text-align: center;
-  background-color: #1d1e1f;
-}
-
-.footer span {
-  font-size: 1.2rem;
-  font-weight: 600;
 }
 
 .title a {
@@ -158,7 +176,7 @@
 
 .terminal {
   position: absolute;
-  bottom: 2rem;
+  bottom: 0rem;
   right: 0;
   width: 83.3%;
   height: 30%;
@@ -199,11 +217,30 @@
   color: #0070f3;
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 2.5rem;
+  border-top: 2px solid #eaeaea;
+  text-align: center;
+  background-color: #1d1e1f;
+}
+
+.footer span {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
 .code {
   background: #fafafa;
+  min-width: 100rem;
+  max-width: max-content;
+  height: 100%;
   border-radius: 5px;
   padding: 0.75rem;
-  font-size: 1.1rem;
+  font-size: .9rem;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
@@ -266,7 +303,7 @@
   }
 
   .code {
-    background: #111;
+    background: #222;
   }
 
   .logo img {
