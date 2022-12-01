@@ -12,6 +12,7 @@ import play from "../public/svgs/play.svg";
 import stop from "../public/svgs/stop.svg";
 import terminal from "../public/svgs/terminal.svg";
 import plus from "../public/svgs/plus.svg";
+import { IErrors, IWarnings } from "../interfaces/messages";
 
 import { analize } from "../services/language";
 
@@ -19,13 +20,20 @@ interface IFile {
     name: string;
     text: string;
 }
+interface IResults {
+    errors: IErrors[];
+    warnings: IWarnings[];
+    textProcessed: string;
+}
+
+
 
 export default function Home() {
     const [folder, setFolder] = useState("Analizador-Lexico");
     const [linea, setLinea] = useState(0);
     const [columna, setColumna] = useState(0);
 
-    const [code, setCode] = useState<string>();
+    const [results, setResults] = useState<IResults>();
 
     const [colapseOpens, setColapseOpens] = useState(">");
     const [colapseFolders, setColapseFolders] = useState(">");
@@ -53,7 +61,6 @@ export default function Home() {
 
     const handleFileInput = (e: any) => {
         var files = e.target.files;
-        console.log(files);
         var filesArr = Array.prototype.slice.call(files);
         setSaveFiles([...filesArr]);
     };
@@ -88,9 +95,8 @@ export default function Home() {
     const handleAnalizeCode = () => {
         if (files[selectedFile]) {
             setShowTerminal(true);
-            setCode("Analizando...");
             const results = analize(files[selectedFile].text);
-            setCode("Código procesado:  " + results.textProcessed);
+            setResults(results);
         }
     };
 
@@ -196,7 +202,7 @@ export default function Home() {
                                         onClick={(e) => changeCode(index)}
                                     >
                                         {inputChangeName &&
-                                        inputChangeName[index] ? (
+                                            inputChangeName[index] ? (
                                             <form
                                                 onSubmit={(e) =>
                                                     handleChangeName(e, index)
@@ -252,7 +258,32 @@ export default function Home() {
                     <div>
                         <span>Terminal</span>
                         <div className={styles.code}>
-                            {code ? code : "Compilando..."}
+                            {results?.textProcessed ? results.textProcessed : "En espera..."}
+                        </div>
+                        <div className={styles.code}>
+                            {results && results?.errors.length > 0 ? (
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Error</th>
+                                            <th>Mensaje</th>
+                                            <th>Linea</th>
+                                            <th>Columna</th>
+                                            <th>Descripcion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {results.errors.map((error: IErrors, index: number) => (
+                                            <tr key={index}>
+                                                <td>{error.error}</td>
+                                                <td>{error.message}</td>
+                                                <td>{error.line}</td>
+                                                <td>{error.column}</td>
+                                                <td>{error.description}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>) : "Sin Errores"}
                         </div>
                     </div>
                 </div>
