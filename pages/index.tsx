@@ -15,6 +15,7 @@ import plus from "../public/svgs/plus.svg";
 import { IErrors, IWarnings } from "../interfaces/messages";
 
 import { analize } from "../services/language";
+import React from "react";
 
 interface IFile {
     name: string;
@@ -255,42 +256,51 @@ export default function Home() {
 
             {files[0] && showTerminal && (
                 <div className={styles.terminal}>
-                    <div>
+                    <div className={styles.code}>
                         <span>Terminal</span>
-                        <div className={styles.code}>
-                            {results?.textProcessed ? results.textProcessed : "En espera..."}
-                        </div>
-                        <div className={styles.code}>
-                            {results && results?.errors.length > 0 ? (
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Error</th>
-                                            <th>Mensaje</th>
-                                            <th>Linea</th>
-                                            <th>Columna</th>
-                                            <th>Descripcion</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {results.errors.map((error: IErrors, index: number) => (
-                                            <tr key={index}>
-                                                <td>{error.error}</td>
-                                                <td>{error.message}</td>
-                                                <td>{error.line}</td>
-                                                <td>{error.column}</td>
-                                                <td>{error.description}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>) : "Sin Errores"}
+                        <div>
+                            <span>Codigo procesado.</span>
+                            <div>
+                                <span>
+                                    {results?.textProcessed ? results.textProcessed : "En espera..."}
+                                </span>
+                                <br />
+                            </div>
+                            <div className={styles.tableStyle}>
+                                {results && results?.errors.length > 0 ? (
+                                    <React.Fragment>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Error</th>
+                                                    <th>Mensaje</th>
+                                                    <th>Linea</th>
+                                                    <th>Columna</th>
+                                                    <th>Descripcion</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {results.errors.map((error: IErrors, index: number) => (
+                                                    <tr key={index}>
+                                                        <td>{error.error}</td>
+                                                        <td>{error.message}</td>
+                                                        <td>{error.line}</td>
+                                                        <td>{error.column}</td>
+                                                        <td>{error.description}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table><br /></React.Fragment>) : "Sin Errores"}
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            )}
+            )
+            }
             {/* <footer className={styles.footer}>
                 <span>{`Lín. ${linea}, col. ${columna}`}</span>
             </footer> */}
-        </div>
+        </div >
     );
 }
