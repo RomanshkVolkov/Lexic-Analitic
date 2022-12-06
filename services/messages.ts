@@ -1,6 +1,6 @@
 import { IErrors } from "../interfaces/messages"
 export const mErrors: any = {
-    suportedCharacters: { error: '', message: `character is not a valid character`, description: 'Los caracteres validos son: a-z, A-Z, 0-9, (, ), {, }, [, ], ., ,, ;, :, +, -, *, /, =, >, <, !, &, |, ?, `, ", %, $', line: 0, column: 0 },
+    suportedCharacters: { error: '', message: `character is not a valid character`, description: 'Valid characters: a-z, A-Z, 0-9, (, ), {, }, [, ], ., ,, ;, :, +, -, *, /, =, >, <, !, &, |, ?, `, ", %, $', line: 0, column: 0 },
     startProgram: { error: 'startExec', message: `is missing and required at program startup`, description: 'startExec is missing', line: '?', column: '?' },
     endProgram: { error: 'endExec', message: `is missing and required at program end`, description: 'endExec is missing', line: '?', column: '?' },
     startDef: { error: 'startDef', message: `is missing and required after starting program "startExec"`, description: 'startDef is missing', line: '?', column: '?' },
