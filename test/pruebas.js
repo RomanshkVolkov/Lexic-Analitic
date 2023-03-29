@@ -1,47 +1,23 @@
-// inicio del programa
-startExec
-// zona de variables
-startDef
-/* 
-comentarios multiples
-*/
-    def num1;
-    def ñum2;
-    def imprimir = (op, res) => clog(`El resultado de la operacion ${op} es: ${res}`);
-endDef
-startBody
-// zona de codigo
-suma = (num1, num2) => (num1 + num2);
-
-resta = (num1, num2) => num1 - num2;
-
-division = (num1, num2) => num2 === 0 ? (new Error('No existe la divicion entre cero'), 'N/A') : num1 / num2;
-@
-multiplicacion = (num1, num2) => num1 * num2;
+init // inicio del programa
+    vars // zona de variables
+        Num num = 10 // declaracion de una variable numerica
+        String txt = 'El numero 1 es: ' // declaracion de una cadena de texto
+        Num num2 = 5 // declaracion de una variable numerica
+        String txt1 = 'El numero 2 es: ' // declaracion de una cadena de texto
+        String txt2 = 'La suma de los numeros es: ' // declaracion de una cadena de texto
+        String saludo = 'Hola mundo' // declaracion de una cadena de texto
+    body // cuerpo del programa
+/*
+El programa funciona con identacion como en phyton y se entiende que el cierre de la etiqueta vars
+es el inicio del body el programa elimina los comentarios simples y multiples antes de analizar la sintaxis
+y que las variables esten definidas si una variable debe estar declarada en la zona de variables para poder
+usarla y se debe inicializar antes de su uso por una asignacion de valor nombre = 'valor'
+ */
+        log(txt, num) // console.log() -> El numero 1 es: 10
+        log(txt1, num2) // console.log() -> El numero 2 es: 5
+        log(txt, num + num2) // console.log() -> La suma de los numeros es: 15
 
 
-
-potencia = (num1, num2) => num1 ** num2;
-
-raiz = (num1, num2) => num1 ** 1 / num2;
-
-modulo = (num1, num2) => num1 % num2;
-
-clog(suma(1, 2)); // 3
-clog(resta(1, 2)); // -1
-clog(division(1, 2)); // 0.5
-clog(multiplicacion(1, 2)); // 2
-clog(potencia(2, 3)); // 8
-clog(raiz(8, 3)); // 2
-clog(modulo(8, 3)); // 2
+end // final del programa
 
 
-imprimir('suma', suma(1, 2));
-imprimir('resta', resta(1, 2));
-imprimir('divicion', division(1, 2));
-imprimir('multiplicacion', multiplicacion(1, 2));
-imprimir('potencia', potencia(2, 3));
-imprimir('raiz', raiz(8, 3));
-imprimir('modulo', modulo(8, 3));
-
-endExec

@@ -1,12 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import fs from "fs";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { TextEditor } from "../components/TextEditor";
 import styles from "../styles/Home.module.css";
-import { FileUploaded } from "../components/FileUploaded";
-import Editor, { Monaco } from "@monaco-editor/react";
 
 import play from "../public/svgs/play.svg";
 import stop from "../public/svgs/stop.svg";
@@ -14,7 +11,7 @@ import terminal from "../public/svgs/terminal.svg";
 import plus from "../public/svgs/plus.svg";
 import { IErrors, IWarnings } from "../interfaces/messages";
 
-import { analize } from "../services/language";
+import { validate } from "../hooks/syntactic";
 import React from "react";
 
 interface IFile {
@@ -27,14 +24,12 @@ interface IResults {
     textProcessed: string;
 }
 
-
-
 export default function Home() {
     const [folder, setFolder] = useState("Analizador-Lexico");
     const [linea, setLinea] = useState(0);
     const [columna, setColumna] = useState(0);
 
-    const [results, setResults] = useState<IResults>();
+    const [errors, setErrors] = useState<any[]>([]);
 
     const [colapseOpens, setColapseOpens] = useState(">");
     const [colapseFolders, setColapseFolders] = useState(">");
@@ -45,6 +40,14 @@ export default function Home() {
     const [saveFiles, setSaveFiles] = useState<any>([]);
 
     const [files, setFiles] = useState<IFile[]>([]);
+
+    const compiler = (text: string) => {
+        text = text.replace(/\r\n/g, "\n");
+        console.log(text);
+        const syntactic = validate(text);
+        const listOfErrors = syntactic;
+        setErrors(listOfErrors);
+    };
 
     const [inputChangeName, setInputChangeName] = useState<boolean[]>();
 
@@ -96,8 +99,7 @@ export default function Home() {
     const handleAnalizeCode = () => {
         if (files[selectedFile]) {
             setShowTerminal(true);
-            const results = analize(files[selectedFile].text);
-            setResults(results);
+            compiler(files[selectedFile].text);
         }
     };
 
@@ -203,7 +205,7 @@ export default function Home() {
                                         onClick={(e) => changeCode(index)}
                                     >
                                         {inputChangeName &&
-                                            inputChangeName[index] ? (
+                                        inputChangeName[index] ? (
                                             <form
                                                 onSubmit={(e) =>
                                                     handleChangeName(e, index)
@@ -225,17 +227,6 @@ export default function Home() {
                                 );
                             })}
                         </div>
-                        {/* <button
-                            onClick={(e) =>
-                                handleColapseList(
-                                    colapseFolders,
-                                    setColapseFolders
-                                )
-                            }
-                        >
-                            {`${colapseFolders}     ${folder}`}
-                        </button>
-                        <div></div> */}
                     </div>
                     {files.map((file: any, index: number) => {
                         return (
@@ -262,45 +253,31 @@ export default function Home() {
                             <span>Codigo procesado.</span>
                             <div>
                                 <span>
-                                    {results?.textProcessed ? results.textProcessed : "En espera..."}
+                                    <b>Archivo: </b> {files[selectedFile].name}
                                 </span>
                                 <br />
                             </div>
                             <div className={styles.tableStyle}>
-                                {results && results?.errors.length > 0 ? (
+                                {errors && errors.length > 0 ? (
                                     <React.Fragment>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Error</th>
-                                                    <th>Mensaje</th>
-                                                    <th>Linea</th>
-                                                    <th>Columna</th>
-                                                    <th>Descripcion</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {results.errors.map((error: IErrors, index: number) => (
-                                                    <tr key={index}>
-                                                        <td>{error.error}</td>
-                                                        <td>{error.message}</td>
-                                                        <td>{error.line}</td>
-                                                        <td>{error.column}</td>
-                                                        <td>{error.description}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table><br /></React.Fragment>) : "Sin Errores"}
+                                        {errors.map(
+                                            (error: any, index: number) => (
+                                                <span key={index}>{error}</span>
+                                            )
+                                        )}
+                                        <br />
+                                    </React.Fragment>
+                                ) : (
+                                    "Sin Errores"
+                                )}
                             </div>
-
                         </div>
                     </div>
                 </div>
-            )
-            }
+            )}
             {/* <footer className={styles.footer}>
                 <span>{`Lín. ${linea}, col. ${columna}`}</span>
             </footer> */}
-        </div >
+        </div>
     );
 }
