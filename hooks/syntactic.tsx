@@ -262,6 +262,8 @@ export const validate = (code: any) => {
         console.log("Error(s) found:");
         console.log(errors);
         console.log(errors.join("\n"));
-        return errors;
+        return errors.filter((value: any, index: any) => {
+            return errors.indexOf(value) === index;
+        });
     }
 };
