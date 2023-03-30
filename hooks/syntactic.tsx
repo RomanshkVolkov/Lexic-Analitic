@@ -39,7 +39,9 @@ const lexer = moo.compile({
     body: /\bbody\s*/,
     log: /\s*log\s*\(\s*(?:[a-zA-Z]\w*\s*\+\s*)*[a-zA-Z]\w*\s*(?:\s*\+\s*(?:\d+|[a-zA-Z]\w*)|\s*,\s*(?:\d+|[a-zA-Z]\w*)\s*)*\)/,
     semicolon: /;/,
-    rpt: /rpt\s*\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)/,
+    if: /if\s*\(\s*(?:\w+)\s*(?:[<>=!]+)\s*(?:\w+)\s*\)\s*\{(?:[\s\S]*?)\}/,
+    rpt: /rpt\s*\{(?:[\s\S]*?)\}/,
+
     end: /\bend\s*/,
     // sum: /\b\d+\s*\+\s*\d+\b|\b[a-zA-Z]\w*\s*\+\s*[a-zA-Z]\w*\b/,
     // ident: /(?!(?:init|vars|body|log|rpt|end)\b)[a-zA-Z]\w*/,
@@ -153,7 +155,9 @@ const validateBody = (
             tokens[i].type === "init" ||
             tokens[i].type === "vars" ||
             tokens[i].type === "body" ||
-            tokens[i].type === "end"
+            tokens[i].type === "end" ||
+            tokens[i].type === "rpt" ||
+            tokens[i].type === "if"
         ) {
             continue;
         } else if (tokens[i].type === "log") {
@@ -188,7 +192,6 @@ const validateBody = (
 
                 for (const varName of variablesUsed) {
                     const name = varName.replace(/['"]+/g, "");
-                    console.log(variables && variables[name].type);
                     if (
                         variables &&
                         variables[name] &&
@@ -201,6 +204,9 @@ const validateBody = (
             }
         } else if (tokens[i].type === "rpt") {
             // ...
+            console.log(tokens[i]);
+        } else if (tokens[i].type === "if") {
+            console.log(tokens[i]);
         } else {
             console.log(tokens[i]);
             errors.push(
@@ -259,7 +265,6 @@ export const validate = (code: any) => {
         console.log("Syntax validation successful");
         return null;
     } else {
-        console.log("Error(s) found:");
         console.log(errors);
         console.log(errors.join("\n"));
         return errors.filter((value: any, index: any) => {
