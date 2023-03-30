@@ -41,7 +41,7 @@ const lexer = moo.compile({
     semicolon: /;/,
     rpt: /rpt\s*\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)/,
     end: /\bend\s*/,
-    sum: /\b\d+\s*\+\s*\d+\b|\b[a-zA-Z]\w*\s*\+\s*[a-zA-Z]\w*\b/,
+    // sum: /\b\d+\s*\+\s*\d+\b|\b[a-zA-Z]\w*\s*\+\s*[a-zA-Z]\w*\b/,
     // ident: /(?!(?:init|vars|body|log|rpt|end)\b)[a-zA-Z]\w*/,
     num: /\bnum\b/,
     str: /\bstr\b/,
